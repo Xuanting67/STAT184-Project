@@ -1,0 +1,22 @@
+---
+title: "STAT184 Project"
+author: "Xuanting Dong & Zhixuan Yang"
+date: "12/9/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+Vgames <- read_csv("~/Downloads/184 project/Video_Game_Sales_as_of_Jan_2017.csv")
+View(Vgames)
+```
+
+```{r}
+head(Vgames)
+str(Vgames)
+```
+
