@@ -14,52 +14,55 @@ library(DataComputing)
 ```
 
 
+### Data Import 
 
 ```{r}
 library(readr)
 Vgames <- read_csv("~/Downloads/184 project/Video_Game_Sales_as_of_Jan_2017.csv")
 View(Vgames)
 
-steam<- read_csv("~/Downloads/184 project/steam-200k.csv")
-View(steam)
+steam2 <- read_csv("~/Downloads/184 project/steam-store-games/steam.csv")
+View(steam2)
 ```
+
+### Data Inspections
 
 ```{r}
 head(Vgames)
 str(Vgames)
 
-head(steam)
+
+head(steam2)
 str(steam)
-
 ```
 
 
-
+### Clean steam2
 ```{r}
-steamclean <-
-  steam %>% 
-  select(`The Elder Scrolls V Skyrim`,purchase,`1.0`) %>%
-  filter(purchase != "purchase")
+
+steam2clean <-
+  steam2 %>%
+  select(name,positive_ratings,negative_ratings,average_playtime,price)
 ```
 
+### left_join
 ```{r}
 
-steamVgames <-
+steamVgames2 <-
   Vgames %>%
-  left_join(steamclean, by = c("Name" = "The Elder Scrolls V Skyrim"))
+  left_join(steam2clean,by=c("Name"="name"))
 
-View(steamVgames)
+View(steamVgames2)
 ```
 
 
-
-
-
-
-
-
-
-
+### Clean steamVgames2
+```{r}
+steamVGclean <-
+  steamVgames2 %>%
+  filter(average_playtime != ".",Critic_Score != ".")
+View(steamVGclean)
+```
 
 
 
