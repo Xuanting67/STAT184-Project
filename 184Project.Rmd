@@ -10,13 +10,67 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+library(DataComputing)
+```
+
+
+
+```{r}
 library(readr)
 Vgames <- read_csv("~/Downloads/184 project/Video_Game_Sales_as_of_Jan_2017.csv")
 View(Vgames)
+
+steam<- read_csv("~/Downloads/184 project/steam-200k.csv")
+View(steam)
 ```
 
 ```{r}
 head(Vgames)
 str(Vgames)
+
+head(steam)
+str(steam)
+
 ```
+
+
+
+```{r}
+steamclean <-
+  steam %>% 
+  select(`The Elder Scrolls V Skyrim`,purchase,`1.0`) %>%
+  filter(purchase != "purchase")
+```
+
+```{r}
+
+steamVgames <-
+  Vgames %>%
+  left_join(steamclean, by = c("Name" = "The Elder Scrolls V Skyrim"))
+
+View(steamVgames)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
