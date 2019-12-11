@@ -55,8 +55,7 @@ plot%>%
 
 ### Key insight/takeaway about research question
 
-#### Basically, we found that the sales of video games is largely related to the rating of the games. For example, we can see class E, E10+,M, and T are much more popular than the rest of class. Other than that, the type of a video game is also related to the sales. Such as Sports, Racing, and Misc are top popular ones. IF you want to make a best selling video games, we highly recommend you to make a Sports, and E class game. One more interesting thing is that, even though we think the market of video games is increasing along recent years, the peak of sales was at 2008 to 2010. Therefore, the total sales of  video games markets are not increasing all the time. 
-
+#### Basically, we found that the sales of video games is largely related to the rating of the games. For example, we can see class E, E10+,M, and T are much more popular than others. Other than that, the genre of a video game is also related to the sales. Such as Sports, Racing, and Misc are top popular ones. If you want to make a best selling video games, we highly recommend you to make a Sports, and E level game. One more interesting thing is that, even though we think the market of video games is increasing along recent years, the peak of sales was at 2008 to 2010. Therefore, the total sales of  video games markets are not increasing all the time.
 
 
 
