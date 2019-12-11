@@ -1,0 +1,90 @@
+---
+title: "Presentation"
+author: "Xuanting Dong & Zhixuan Yang"
+output: html_notebook
+---
+
+### Research Question
+
+#### We are going analyze what factors can influence the sales of Video Games. The main reason we choose this is we want to give some suggestions to those new game makers, enabling them to design a popular and good-selling game. 
+
+
+### Challenge Encountered
+
+#### The main challenge we met was data collecting. Actually we found several datasets, however, they were either too small after cleaning or too irrelavent with our first dataset. To solve this problem, we first collect more datasets, and then we adjust the way to clean our data, like group by what, filter what. Finally, we got a cleaned dataset with over 8000 observations. 
+
+### Key Visualization 
+
+
+```{r}
+library(tidyverse)
+library(DataComputing)
+library(party)
+```
+
+```{r results = 'hide'}
+library(readr)
+Primary <- read_csv("~/Downloads/STAT184new/STAT184-Project/Video_Game_Sales_as_of_Jan_2017.csv")
+Developer<- read_csv("~/Downloads/STAT184new/STAT184-Project/GameDeveloper.csv")
+```
+
+```{r}
+Developer_clean <-
+  Developer %>%
+  select(Name,Developer)
+Games_final <-
+  Primary %>%
+  left_join(Developer_clean,by=c("Name"="Name"))
+Games_final<-
+  Games_final%>%
+  na.omit()%>%
+  distinct()
+head(Games_final)
+```
+
+```{r}
+plot<-
+  Games_final%>%
+  group_by(Genre,Rating,Year_of_Release)%>%
+  summarise(total = sum(Global_Sales))
+plot%>%
+  ggplot(aes(x=Year_of_Release,y=total))+
+  geom_point(aes(color = Genre))+
+  facet_wrap(~Rating)
+```
+
+### Key insight/takeaway about research question
+
+#### Basically, we found that the sales of video games is largely related to the rating of the games. For example, we can see class E, E10+,M, and T are much more popular than the rest of class. Other than that, the type of a video game is also related to the sales. Such as Sports, Racing, and Misc are top popular ones. IF you want to make a best selling video games, we highly recommend you to make a Sports, and E class game. One more interesting thing is that, even though we think the market of video games is increasing along recent years, the peak of sales was at 2008 to 2010. Therefore, the total sales of  video games markets are not increasing all the time. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
