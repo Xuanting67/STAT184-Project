@@ -2,78 +2,97 @@
 title: "STAT184 Project"
 author: "Xuanting Dong & Zhixuan Yang"
 date: "12/9/2019"
-output: html_document
+output: html_notebook
 ---
 
 ```{r setup, include=FALSE}
+rm(list = ls())
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+library(tidyverse)
 library(DataComputing)
+library(party)
 ```
 
 
-### Data Import 
+### Import the Data
 
-```{r}
+```{r results = 'hide'}
 library(readr)
-Vgames <- read_csv("~/Downloads/184 project/Video_Game_Sales_as_of_Jan_2017.csv")
-View(Vgames)
-
-steam2 <- read_csv("~/Downloads/184 project/steam-store-games/steam.csv")
-View(steam2)
+Primary <- read_csv("~/Desktop/STAT184/Project/STAT184-Project/Video_Game_Sales_as_of_Jan_2017.csv")
+Developer<- read_csv("~/Desktop/STAT184/Project/STAT184-Project/GameDeveloper.csv")
 ```
 
 ### Data Inspections
 
 ```{r}
-head(Vgames)
-str(Vgames)
-
-
-head(steam2)
-str(steam)
+head(Primary)
+head(Developer)
 ```
 
 
-### Clean steam2
+### Clean Data and Merge two datasets together
 ```{r}
-
-steam2clean <-
-  steam2 %>%
-  select(name,positive_ratings,negative_ratings,average_playtime,price)
+Developer_clean <-
+  Developer %>%
+  select(Name,Developer)
+Games_final <-
+  Primary %>%
+  left_join(Developer_clean,by=c("Name"="Name"))
+Games_final<-
+  Games_final%>%
+  na.omit()%>%
+  distinct()
+head(Games_final)
 ```
 
-### left_join
+### Data Visualization
 ```{r}
-
-steamVgames2 <-
-  Vgames %>%
-  left_join(steam2clean,by=c("Name"="name"))
-
-View(steamVgames2)
+Sales_year_publish<-
+  Games_final%>%
+  group_by(Year_of_Release)%>%
+  summarise(total=sum(Global_Sales))%>%
+  arrange((Year_of_Release))
+head(Sales_year_publish)
+Sales_year_publish%>%
+  ggplot(aes(x=Year_of_Release,y=total))+
+  geom_line()
 ```
 
 
-### Clean steamVgames2
 ```{r}
-steamVGclean <-
-  steamVgames2 %>%
-  filter(average_playtime != ".",Critic_Score != ".")
-View(steamVGclean)
+type<-
+  Games_final%>%
+  group_by(Genre,Year_of_Release)%>%
+  summarise(total=sum(Global_Sales))
+type%>%
+  ggplot(aes(x=Year_of_Release,y=total))+
+  geom_point(aes(color=Genre))
 ```
 
+```{r}
+mod1<-
+  party::ctree(
+    Global_Sales ~ Year_of_Release + User_Score ,
+    data=Games_final)
+Games_final%>%
+  mutate(probability=as.numeric(predict(mod1)),
+         likelihood=
+           ifelse(Global_Sales,
+                  probability,
+                  1-probability))%>%
+  summarise(log_likelihood=sum(log(likelihood)))
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
+```{r}
+plot<-
+  Games_final%>%
+  group_by(Genre,Rating,Year_of_Release)%>%
+  summarise(total = sum(Global_Sales))
+plot%>%
+  ggplot(aes(x=Year_of_Release,y=total))+
+  geom_point(aes(color = Genre))+
+  facet_wrap(~Rating)
+```
